@@ -18,7 +18,7 @@ public class      SocialUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 //    @JoinColumn(name = "social_profile_id")
 
     private SocialProfile socialProfile;
@@ -28,8 +28,7 @@ public class      SocialUser {
 
     private List<Post> posts = new ArrayList<>();
 
-    @ManyToMany
-
+    @ManyToMany (fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_group",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -41,5 +40,11 @@ public class      SocialUser {
     @Override
     public int hashCode(){
         return Objects.hash(id);
+    }
+
+    public void setSocialProfile(SocialProfile socialProfile){
+        socialProfile.setUser(this);
+        this.socialProfile = socialProfile;
+
     }
 }
